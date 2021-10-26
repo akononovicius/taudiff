@@ -1,4 +1,4 @@
-# `taudiff` - inter-event time (tau) diffusion module
+# `taudiff` - diffusion models of inter-event (tau) times
 
 Here we implement diffusive inter-event time models as well as basic time
 series conversion tools necessary to study them. 
