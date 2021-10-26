@@ -1,3 +1,3 @@
 [submodule "fgn-generator-gsl"]
-	path = fgn/fgn-generator-gsl
+    path = _fgn/fgn-generator-gsl
     url = https://github.com/akononovicius/fgn-generator-gsl
