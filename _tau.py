@@ -26,7 +26,7 @@ def get_tau_series(
             (e.g., see `markovian_beta` submodule).
         sigma: (default: 1e-3)
             Sigma parameter of the iterative equation driving the
-            process.  Sigma parameter controls how fast the inter-event
+            process. Sigma parameter controls how fast the inter-event
             time values change.
         hurst: (default: 0.5)
             Hurst index of the inter-event time series. If driving noise
