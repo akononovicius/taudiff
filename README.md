@@ -39,11 +39,11 @@ and spectra of event count time series. To obtain these using
 ```python
 from taudiff import fractional_model, get_tau_series, event_series_generator
 
-# obtain inter-event time series in the k-space (sample 16 points)
+# obtain inter-event time series in the k-space (sample 1024 points)
 tau_series = get_tau_series(fractional_model, sigma=1e-2, hurst=0.6,
     n_points=1024, seed=123)
 
-# obtain event count time series in the physical time space (sample 32
+# obtain event count time series in the physical time space (sample 2048
 # points)
 esg = event_series_generator(fractional_model, sigma=1e-2, hurst=0.6,
     n_batch_points=2048, seed=123)
