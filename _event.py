@@ -12,6 +12,7 @@ def event_series_generator(
     hurst: float = 0.5,
     tau_0: float = 0.5,
     boundary: float = 1e-3,
+    dt: float = 1,
     n_batch_points: int = 262144,
     n_tau_points: int = -1,
     seed: int = -1,
@@ -44,6 +45,8 @@ def event_series_generator(
             Fine-tunes soft boundary conditions the process is allowed
             to approach. Inter-event times confined to interval
             [0+boundary, 1-boundary].
+        dt: (default: 1)
+            Discretization time step for the event count time series.
         n_batch_points: (default: 262144)
             The desired length of a single batch (sample) of event count
             time series. Note that the length applies to the physical
@@ -76,7 +79,8 @@ def event_series_generator(
             [1 3 2 2 2 2 2 2 2 2 2 2 2 3 2 1]
         ```
     """
-    def __batch(sigma, hurst, tau_0, boundary, n_tau_points, seed):
+
+    def __batch(sigma, hurst, tau_0, boundary, dt, n_tau_points, seed):
         tau_series = get_tau_series(
             tau_series_generator,
             sigma=sigma,
@@ -91,14 +95,14 @@ def event_series_generator(
         time_series = np.cumsum(tau_series)
         del tau_series
 
-        time_series = np.ceil(time_series).astype(int)
+        time_series = np.ceil(time_series / dt).astype(int)
         event_series = np.bincount(time_series)[1:]
         del time_series
 
         return event_series, tau_last
 
     if n_tau_points < 0:
-        n_tau_points = 2**int(np.round(np.log2(n_batch_points) + 1))
+        n_tau_points = 2 ** int(np.round(np.log2(n_batch_points) + 1))
 
     tau_last = tau_0
     event_series = np.array([], dtype=int)
@@ -107,7 +111,7 @@ def event_series_generator(
             if seed >= 0:
                 seed = seed + 1
             cur_event_series, tau_last = __batch(
-                sigma, hurst, tau_last, boundary, n_tau_points, seed
+                sigma, hurst, tau_last, boundary, dt, n_tau_points, seed
             )
             event_series = np.concatenate((event_series, cur_event_series))
 
